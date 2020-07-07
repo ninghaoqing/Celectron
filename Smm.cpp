@@ -6,7 +6,7 @@ void Smm::save(std::string name,std::vector<double> data )
 
 std::ofstream fout;
 fout.open(name);
-for (int i=1;i<data.size()+1;i++)
+for (int i=0;i<data.size();i++)
 {
  fout<<data[i]<<'\n';
 
@@ -63,7 +63,7 @@ Smm::Smm(int time1,int time2,double cep,double gap,double V_DC)
         temppoint=-tspan/2+dT;
         this->T=std::vector<double>(t_point,0);
         this->t_trace=std::vector<double>(t_point,0);
-        for (int i=1;i<t_point+1;i++)
+        for (int i=0;i<t_point;i++)
         {
           T[i]=temppoint;
           temppoint=temppoint+this->dT;
@@ -106,7 +106,7 @@ Smm::Smm(int time1,int time2,double cep,double gap,double V_DC)
         this->E_p=std::vector<std::complex<double>>(t_point,0);
         this->P=std::vector<double>(t_point,0);
 
-        for (int i=1;i<this->E_origin.size()+1;i++)
+        for (int i=0;i<this->E_origin.size();i++)
         {this->E_origin[i]=this->E0*std::exp(std::complex<double>(0.0, 1.0)*this->omega*this->T[i]+std::complex<double>(0.0, 1.0)*cep)*std::exp(-2.0*log(2.0)*std::pow(this->T[i]/this->tau_FWHM,2));
         this->I_origin[i]=this->coeff*std::pow(abs(this->E_origin[i]),2);
           this->P_total=this->P_total+this->I_origin[i]*this->pi*std::pow(this->radius,2)*this->dT;
@@ -154,8 +154,8 @@ Smm::Smm(int time1,int time2,double cep,double gap,double V_DC)
           this->survive=std::vector<double>(T.size(),0);
 // rho_x(1)=1
         //print(this->survive) 
-        this->survive[1]=1;
-        this->a_temp=this->q*std::real(this->E[1])/this->m_e;
+        this->survive[0]=1;
+        this->a_temp=this->q*std::real(this->E[0])/this->m_e;
         tt=1;
         int i=tt;
         if (this->a_temp>0)
@@ -169,10 +169,10 @@ Smm::Smm(int time1,int time2,double cep,double gap,double V_DC)
 
 double Smm::calculate_score()
 {
-for (tt=2;tt<t_point+1;tt++)
+for (tt=1;tt<t_point;tt++)
   { //    display(tt)
        a_temp=q*std::real(E[tt])/m_e; 
-       for (int i=1;i<t_point+1;i++)
+       for (int i=0;i<t_point;i++)
        { 
 //         display(survive(i,tt));
           if (survive[i]>0)
@@ -210,7 +210,7 @@ for (tt=2;tt<t_point+1;tt++)
       survive[i]=1;
    
   }
-       for (int i=1;i<t_point+1;i++)
+       for (int i=0;i<t_point;i++)
         {
            if (survive[i]>0)
            {
